@@ -63,12 +63,14 @@ paster setup-rhodecode $RHODEBASEDIR/data/production.ini
 adduser --no-create-home --disabled-login --system –group $RHODEUSER
 chown -R $RHODEUSER:$RHODEUSER $RHODEBASEDIR
 
+chmod +x rhodecode-daemon2
 cp rhodecode-daemon2 /etc/init.d/rhodecode
 update-rc.d rhodecode defaults
 
 #TODO NGINX
 apt-get -y install nginx
 mkdir /etc/nginx/certs
+chmod 600 server.crt server.key
 cp server.crt /etc/nginx/certs/server.crt
 cp server.key /etc/nginx/certs/server.key
 cp nginx_rhodecode.conf /etc/nginx/conf.d/rhodecode.conf
