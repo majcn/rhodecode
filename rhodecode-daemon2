@@ -22,7 +22,7 @@ CONF_NAME="production.ini"
 PID_PATH="$APP_PATH/$APP_NAME.pid"
 LOG_PATH="$APP_PATH/$APP_NAME.log"
 
-PYTHON_PATH="$APP_HOMEDIR/venv/bin"
+PYTHON_PATH="$APP_HOMEDIR/venv"
 
 RUN_AS="rhodecode"
 
