@@ -1,0 +1,25 @@
+upstream rhodecode {
+    server  127.0.0.1:5000;
+}
+        
+server {
+    listen       443 ssl;
+    server_name  localhost;
+
+    ssl_certificate      ../certs/server.crt;
+    ssl_certificate_key  ../certs/server.key;
+
+    ssl_session_timeout  5m;
+
+    ssl_protocols  SSLv2 SSLv3 TLSv1;
+    ssl_ciphers  HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers   on;
+
+    location / {
+        try_files   $uri    @rhodecode;
+    }
+
+    location @rhodecode {
+        proxy_pass  http://rhodecode;
+    }
+}
