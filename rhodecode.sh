@@ -38,7 +38,7 @@ pip install virtualenv
 mkdir $RHODEBASEDIR
 virtualenv --no-site-packages $RHODEBASEDIR/venv
 source $RHODEBASEDIR/venv/bin/activate
-pip install python-mysqldb
+pip install mysql-python
 pip install pastescript
 pip install rhodecode
 
