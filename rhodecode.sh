@@ -43,6 +43,7 @@ pip install pastescript
 pip install rhodecode
 
 mkdir $RHODEBASEDIR/data
+mkdir $RHODEBASEDIR/repos
 paster make-config RhodeCode $RHODEBASEDIR/data/production.ini
 
 sed -i "s/use_celery = false/use_celery = true/" $RHODEBASEDIR/data/production.ini
@@ -51,6 +52,7 @@ sed -i "s/broker.user = rabbitmq/broker.user = rhodeuser/" $RHODEBASEDIR/data/pr
 sed -i "s/broker.password = qweqwe/broker.password = rhodepass/" $RHODEBASEDIR/data/production.ini
 sed -i "s/sqlalchemy.db1.url = sqlite/# sqlalchemy.db1.url = sqlite/" $RHODEBASEDIR/data/production.ini
 sed -i "s/# sqlalchemy.db1.url = mysql.*$/sqlalchemy.db1.url = mysql:\/\/rhodecode:$RHODEMYSQL_PASS@localhost\/rhodecode/" $RHODEBASEDIR/data/production.ini
+paster setup-rhodecode $RHODEBASEDIR/data/production.ini --user=admin --password=123456 --email=admin@demo.si --repos=$RHODEBASEDIR/repos
 
 adduser --no-create-home --disabled-login --system --group $RHODEUSER
 chown -R $RHODEUSER:$RHODEUSER $RHODEBASEDIR
@@ -70,8 +72,6 @@ cp nginx_rhodecode.site /etc/nginx/sites-available/rhodecode
 ln -s /etc/nginx/sites-available/rhodecode /etc/nginx/sites-enabled/rhodecode
 rm /etc/nginx/sites-enabled/default
 
-
-paster setup-rhodecode $RHODEBASEDIR/data/production.ini
 echo
 echo
 echo
