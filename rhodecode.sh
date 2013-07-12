@@ -75,6 +75,5 @@ rm /etc/nginx/sites-enabled/default
 echo
 echo
 echo
-echo $MYSQL_PASS
-echo $RHODEMYSQL_PASS
+echo "MYSQL root password: "$MYSQL_PASS
 echo
