@@ -61,7 +61,6 @@ chmod +x rhodecode-daemon2
 cp rhodecode-daemon2 /etc/init.d/rhodecode
 update-rc.d rhodecode defaults
 
-#TODO NGINX
 apt-get -y install nginx
 mkdir /etc/nginx/certs
 chmod 600 server.crt server.key
