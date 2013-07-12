@@ -45,22 +45,14 @@ pip install rhodecode
 mkdir $RHODEBASEDIR/data
 paster make-config RhodeCode $RHODEBASEDIR/data/production.ini
 
-echo
-echo
-echo
-echo $MYSQL_PASS
-echo $RHODEMYSQL_PASS
-echo
-
 sed -i "s/use_celery = false/use_celery = true/" $RHODEBASEDIR/data/production.ini
 sed -i "s/broker.vhost = rabbitmqhost/broker.vhost = rhodevhost/" $RHODEBASEDIR/data/production.ini
 sed -i "s/broker.user = rabbitmq/broker.user = rhodeuser/" $RHODEBASEDIR/data/production.ini
 sed -i "s/broker.password = qweqwe/broker.password = rhodepass/" $RHODEBASEDIR/data/production.ini
 sed -i "s/sqlalchemy.db1.url = sqlite/# sqlalchemy.db1.url = sqlite/" $RHODEBASEDIR/data/production.ini
 sed -i "s/# sqlalchemy.db1.url = mysql.*$/sqlalchemy.db1.url = mysql:\/\/rhodecode:$RHODEMYSQL_PASS@localhost\/rhodecode/" $RHODEBASEDIR/data/production.ini
-paster setup-rhodecode $RHODEBASEDIR/data/production.ini
 
-adduser --no-create-home --disabled-login --system –group $RHODEUSER
+adduser --no-create-home --disabled-login --system --group $RHODEUSER
 chown -R $RHODEUSER:$RHODEUSER $RHODEBASEDIR
 
 chmod +x rhodecode-daemon2
@@ -77,3 +69,12 @@ cp nginx_rhodecode.conf /etc/nginx/conf.d/rhodecode.conf
 cp nginx_rhodecode.site /etc/nginx/sites-available/rhodecode
 ln -s /etc/nginx/sites-available/rhodecode /etc/nginx/sites-enabled/rhodecode
 rm /etc/nginx/sites-enabled/default
+
+
+paster setup-rhodecode $RHODEBASEDIR/data/production.ini
+echo
+echo
+echo
+echo $MYSQL_PASS
+echo $RHODEMYSQL_PASS
+echo
