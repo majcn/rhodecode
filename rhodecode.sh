@@ -17,7 +17,7 @@ RHODEMYSQL_PASS=`head -c 200 /dev/urandom | tr -cd 'A-Za-z0-9' | head -c 10`
 apt-get update
 apt-get -y upgrade
 
-apt-get install -y python-pip python-dev libmysqlclient-dev rabbitmq-server
+apt-get install -y python-pip python-dev libmysqlclient-dev libldap2-dev libsasl2-dev rabbitmq-server
 
 rabbitmqctl add_user rhodeuser rhodepass
 rabbitmqctl add_vhost rhodevhost
@@ -39,6 +39,7 @@ mkdir $RHODEBASEDIR
 virtualenv --no-site-packages $RHODEBASEDIR/venv
 source $RHODEBASEDIR/venv/bin/activate
 pip install mysql-python
+pip install python-ldap
 pip install pastescript
 pip install rhodecode
 
@@ -52,7 +53,7 @@ sed -i "s/broker.user = rabbitmq/broker.user = rhodeuser/" $RHODEBASEDIR/data/pr
 sed -i "s/broker.password = qweqwe/broker.password = rhodepass/" $RHODEBASEDIR/data/production.ini
 sed -i "s/sqlalchemy.db1.url = sqlite/# sqlalchemy.db1.url = sqlite/" $RHODEBASEDIR/data/production.ini
 sed -i "s/# sqlalchemy.db1.url = mysql.*$/sqlalchemy.db1.url = mysql:\/\/rhodecode:$RHODEMYSQL_PASS@localhost\/rhodecode/" $RHODEBASEDIR/data/production.ini
-paster setup-rhodecode $RHODEBASEDIR/data/production.ini --user=admin --password=123456 --email=admin@demo.si --repos=$RHODEBASEDIR/repos
+yes | paster setup-rhodecode $RHODEBASEDIR/data/production.ini --user=admin --password=123456 --email=admin@demo.si --repos=$RHODEBASEDIR/repos
 
 adduser --no-create-home --disabled-login --system --group $RHODEUSER
 chown -R $RHODEUSER:$RHODEUSER $RHODEBASEDIR
